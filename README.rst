@@ -7,3 +7,5 @@ repository.
 
 Contents
 ========
+
+* `Bogobogosort (Haskell) <bogobogosort>`_
