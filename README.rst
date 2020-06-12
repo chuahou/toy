@@ -9,3 +9,4 @@ Contents
 ========
 
 * `Bogobogosort (Haskell) <bogobogosort>`_
+* `Regex from Codewars (Haskell) <regex>`_ (In progress)
