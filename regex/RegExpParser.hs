@@ -18,6 +18,8 @@ data RegExp = Normal Char       -- A character that is not in "()*|."
             | Str [RegExp]      -- A sequence of regexps
     deriving (Show, Eq)
 
+----- Parser definitions -----
+
 -- Parser type and its instances as a Monad
 newtype Parser a = Parser { parse :: String -> Maybe (a, String) }
 
@@ -41,13 +43,45 @@ instance Monad Parser where
     Parser p >>= f = Parser (join . fmap f' . p)
         where f' (y, ys) = parse (f y) ys
 
--- Match a single character
-char :: Char -> Parser Char
-char c = Parser parse
-    where parse (x:xs) | c == x    = Just (c, xs)
-                       | otherwise = Nothing
+-- Alternative parsers
+(<|>) :: Parser a -> Parser a -> Parser a
+Parser p <|> Parser q = Parser (\xs -> maybe (q xs) Just $ p xs)
+
+-- Parser that returns Nothing
+nothing :: Parser a
+nothing = Parser (\x -> Nothing)
+
+-- Additional constraint on parser
+(<?>) :: (a -> Bool) -> Parser a -> Parser a
+pred <?> Parser p = Parser p >>= f
+    where f y | pred y    = pure y
+              | otherwise = nothing
+
+-- Match any single character
+char :: Parser Char
+char = Parser parse
+    where parse (x:xs) = Just (x, xs)
           parse [] = Nothing
 
--- For Codewars
+----- Regex Parsers -----
+
+-- Special characters
+specialChars :: [Char]
+specialChars = "()*|."
+
+-- Match any normal character (not in specialChars)
+normal :: Parser RegExp
+normal = (`notElem` specialChars) <?> char >>= return . Normal
+
+-- Match an Any character (.)
+anychar :: Parser RegExp
+anychar = (== '.') <?> char >> return Any
+
+-- Overall parser
+regex :: Parser RegExp
+regex = undefined
+
+----- Codewars -----
+
 parseRegExp :: String -> Maybe RegExp
 parseRegExp = fmap fst . parse regex
