@@ -54,7 +54,7 @@ nothing = Parser (\x -> Nothing)
 -- Additional constraint on parser
 (<?>) :: (a -> Bool) -> Parser a -> Parser a
 pred <?> Parser p = Parser p >>= f
-    where f y | pred y    = pure y
+    where f y | pred y    = return y
               | otherwise = nothing
 
 -- Match any single character
