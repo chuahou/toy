@@ -9,6 +9,7 @@
 module RegExpParser ( RegExp(..) , parseRegExp ) where
 
 import Control.Monad ( join )
+import Control.Applicative ( Alternative, empty, (<|>) )
 import Data.Tuple ( swap )
 
 data RegExp = Normal Char       -- A character that is not in "()*|."
@@ -43,9 +44,12 @@ instance Monad Parser where
     Parser p >>= f = Parser (join . fmap f' . p)
         where f' (y, ys) = parse (f y) ys
 
--- Alternative parsers
-(<|>) :: Parser a -> Parser a -> Parser a
-Parser p <|> Parser q = Parser (\xs -> maybe (q xs) Just $ p xs)
+instance Alternative Parser where
+    -- Fail parsing
+    empty = Parser (\_ -> Nothing)
+
+    -- Return p's parse, if fail, then return q's parse
+    Parser p <|> Parser q = Parser (\xs -> p xs <|> q xs)
 
 -- Parser that returns Nothing
 nothing :: Parser a
