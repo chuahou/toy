@@ -9,7 +9,7 @@
 module RegExpParser ( RegExp(..) , parseRegExp ) where
 
 import Control.Monad ( join )
-import Control.Applicative ( Alternative, empty, (<|>) )
+import Control.Applicative ( Alternative, empty, (<|>), many )
 import Data.Tuple ( swap )
 
 data RegExp = Normal Char       -- A character that is not in "()*|."
@@ -84,6 +84,10 @@ normal = (`notElem` specialChars) <?> char >>= return . Normal
 -- Match an Any character (.)
 anychar :: Parser RegExp
 anychar = mchar '.' >> return Any
+
+-- Match a sequence of RegExps
+str :: Parser RegExp
+str = many regex >>= return . Str
 
 -- Overall parser
 regex :: Parser RegExp
