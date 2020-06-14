@@ -87,7 +87,11 @@ anychar = mchar '.' >> return Any
 
 -- Match a sequence of RegExps
 str :: Parser RegExp
-str = many regex >>= return . Str
+str = many sequenceable >>= return . Str
+
+-- Sequenceable parsers
+sequenceable :: Parser RegExp
+sequenceable = normal <|> anychar
 
 -- Overall parser
 regex :: Parser RegExp
