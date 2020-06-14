@@ -67,6 +67,10 @@ char = Parser parse
     where parse (x:xs) = Just (x, xs)
           parse [] = Nothing
 
+-- Match a specific character
+mchar :: Char -> Parser Char
+mchar c = (== c) <?> char
+
 ----- Regex Parsers -----
 
 -- Special characters
@@ -79,7 +83,7 @@ normal = (`notElem` specialChars) <?> char >>= return . Normal
 
 -- Match an Any character (.)
 anychar :: Parser RegExp
-anychar = (== '.') <?> char >> return Any
+anychar = mchar '.' >> return Any
 
 -- Overall parser
 regex :: Parser RegExp
