@@ -85,6 +85,13 @@ int main(void)
 	print(A, LEN);
 	puts("\n");
 
+	// print colour key
+	printf("Colour key: ");
+	BLUE();   printf("Left partition ");
+	RED();    printf("Pivot ");
+	YELLOW(); printf("Right partition\n\n");
+	WHITE();
+
 	// perform sort
 	quicksort(A, 0, LEN);
 
