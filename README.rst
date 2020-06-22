@@ -12,3 +12,4 @@ Contents
 * `Regex from Codewars (Haskell) <regex>`_ (In progress)
 * `xkcd 37 (Haskell) <xkcd37>`_ (Also see
   `actual xkcd 37 <https://xkcd.com/37/>`_)
+* `Quicksort (C) <quicksort>`_
