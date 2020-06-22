@@ -56,7 +56,7 @@ void quicksort(int* A, size_t l, size_t r)
 
 	// print partition results
 	// A[0..l) | A[l..p-1) | A[p-1] | A[p..r) | A[r..LEN)
-	// white   | blue      | green  | yellow  | white
+	// white   | blue      | red    | yellow  | white
 	WHITE();  print(A, l); printf("| ");
 	BLUE();   print(A + l, p - 1 - l);
 	WHITE();  printf("| ");
