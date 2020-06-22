@@ -19,6 +19,13 @@
 #define YELLOW()     PCOLOR("[1;33m")
 #define RED()        PCOLOR("[1;31m")
 
+#define PRINT_SEP // comment to remove separators
+#ifdef PRINT_SEP
+#define SEPARATOR "| " // separator for printing
+#else
+#define SEPARATOR ""
+#endif
+
 // display array with elements separated by spaces
 void print(int* A, size_t N)
 {
@@ -57,13 +64,13 @@ void quicksort(int* A, size_t l, size_t r)
 	// print partition results
 	// A[0..l) | A[l..p-1) | A[p-1] | A[p..r) | A[r..LEN)
 	// white   | blue      | red    | yellow  | white
-	WHITE();  print(A, l); printf("| ");
+	WHITE();  print(A, l); printf(SEPARATOR);
 	BLUE();   print(A + l, p - 1 - l);
-	WHITE();  printf("| ");
+	WHITE();  printf(SEPARATOR);
 	RED();    printf("%d ", A[p - 1]);
-	WHITE();  printf("| ");
+	WHITE();  printf(SEPARATOR);
 	YELLOW(); print(A + p, r - p);
-	WHITE();  printf("| "); print(A + r, LEN - r);
+	WHITE();  printf(SEPARATOR); print(A + r, LEN - r);
 	puts("");
 
 	// sort partitions
