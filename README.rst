@@ -16,3 +16,4 @@ Contents
 * `Straight line language interpreter (Haskell) <sll>`_ (programming
   exercise from chapter 1 of *Modern Compiler Implementation in C* by A.
   W. Appel)
+* `isEven <isEven>`_
