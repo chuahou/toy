@@ -9,7 +9,7 @@ Contents
 ========
 
 * `Bogobogosort (Haskell) <bogobogosort>`_
-* `Regex from Codewars (Haskell) <regex>`_ (In progress)
+* `Regex from Codewars (Haskell) <regex>`_
 * `xkcd 37 (Haskell) <xkcd37>`_ (Also see
   `actual xkcd 37 <https://xkcd.com/37/>`_)
 * `Quicksort (C) <quicksort>`_
