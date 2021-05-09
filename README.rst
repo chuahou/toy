@@ -17,3 +17,5 @@ Contents
   exercise from chapter 1 of *Modern Compiler Implementation in C* by A.
   W. Appel)
 * `isEven <isEven>`_
+* `Simple pthreads implementation of synchronous channel
+  <pthread_channel>`_
