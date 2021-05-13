@@ -1,0 +1,35 @@
+-- SPDX-License-Identifier: MIT
+-- Copyright (c) 2021 Chua Hou
+
+{-
+  A CSPM script to check using FDR that the idea in example.c is correct for
+  sorting.
+-}
+
+N        = 12
+sorted   = <0..N-1>    -- Desired sorted sequence of N items.
+alphabet = set(sorted) -- Set of N items.
+
+-- Channel c.n from worker (n - 1) to worker n.
+channel c : {0..N}.alphabet
+
+-- Each worker keeps the largest value seen so far and sends all other values
+-- on, for N iterations.
+Worker(n) = (c.n?x -> Worker'(0, n, x))
+Worker'(i, n, x) = if i == N then STOP else
+                    c.n?y ->
+                      if x < y
+                      then c.(n+1)!x -> Worker'(i + 1, n, y)
+                      else c.(n+1)!y -> Worker'(i + 1, n, x)
+
+-- Send values in nondeterministically from alphabet to c.0.
+In(X) = not empty(X) & |~| x : X @ c.0.x -> In(diff(X, {x}))
+
+-- Parallel composition of workers, hiding internal communications.
+Sys  = Sys' \ diff({|c|}, {|c.N|})
+Sys' = ((|| n : {0..N-1} @ [{|c.n, c.(n+1)|}] Worker(n)) [|{|c.0|}|] In(alphabet))
+
+-- Spec sends out each value in order.
+Spec = ; x : sorted @ c.N.x -> SKIP
+
+assert Spec [T= Sys
